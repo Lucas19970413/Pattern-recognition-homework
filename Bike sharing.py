@@ -157,8 +157,6 @@ DataTrain = DataTrain[FeatureNames]
 datetimecol = DataTest["datetime"]
 DataTest = DataTest[FeatureNames]
 # 根据要求建立评估模型
-
-
 def rmsle(y, y_, convertExp=True):
     if convertExp:
         y = np.exp(y),
@@ -184,6 +182,12 @@ R_Model.fit(DataTrain,yLabelsLog)
 preds = R_Model.predict(X=DataTrain)
 print("RMSLE Value For Random Forest: ",rmsle(np.exp(yLabelsLog),np.exp(preds),False))
 
+# 3.Ensemble Model - Gradient Boost
+G_Model = GradientBoostingRegressor(n_estimators=4000, alpha=0.01)
+yLabelsLog = np.log1p(yLabels)
+G_Model.fit(DataTrain, yLabelsLog)
+preds = G_Model.predict(X=DataTrain)
+print("RMSLE Value For Gradient Boost: ", rmsle(np.exp(yLabelsLog), np.exp(preds), False))
 
 predsTest = R_Model.predict(X=DataTest)
 
