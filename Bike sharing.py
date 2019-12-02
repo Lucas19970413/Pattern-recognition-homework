@@ -4,7 +4,8 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import LinearRegression,Ridge,Lasso
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.linear_model import LinearRegression
 import warnings
 pd.options.mode.chained_assignment = None
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -47,7 +48,7 @@ sns.regplot(x="index", y="windspeed", data=DataTrain, ax=ax4)
 ax4.set(ylabel="windspeed", title="windspeed scatter diagram")
 # 存在异常值体感温度，风速，以及部分count值
 
-# 数据预处理
+# 数据切割
 # DataTrain.drop('index', inplace=True, axis=1)
 DataTrain['datetime'] = pd.to_datetime(DataTrain['datetime'])
 DataTrain['year'] = DataTrain['datetime'].dt.year
@@ -140,7 +141,7 @@ fig7.set_size_inches(10, 10)
 ax5 = fig7.add_subplot(1, 1, 1)
 sns.heatmap(Correlation, mask=mask, square=True, annot=True, cbar=True, ax=ax5)
 ax5.set(title="Correlation Analysis")
-# 补充分析
+# 多变量联合分析
 fig8,(ax18,ax19) = plt.subplots(nrows=2)
 holiday_hour = pd.DataFrame(DataTrain.groupby(["hour","holiday"],sort=True)["count"].mean()).reset_index()
 sns.pointplot(x=holiday_hour["hour"], y=holiday_hour["count"],hue=holiday_hour["holiday"], data=holiday_hour, join=True,ax=ax18)
